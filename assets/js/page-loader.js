@@ -1,6 +1,4 @@
-/**
- * CINEVA – Generic page content loader (no ES modules)
- */
+
 (function () {
   var D = window.CinevaData;
   var S = window.CinevaStorage;
@@ -166,7 +164,7 @@
       if (S.addMovieRequest) {
         var u = S.getAuthUser() || {};
         S.addMovieRequest({ title: title, note: note, fromEmail: u.email, fromName: u.name });
-        document.getElementById("req-msg").textContent = "Request sent. Admins will see it in the notification panel.";
+        document.getElementById("req-msg").textContent = "Request sent.";
         document.getElementById("req-msg").style.color = "var(--color-accent,#FF0000)";
         e.target.reset();
       }
