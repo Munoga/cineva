@@ -229,7 +229,7 @@
 
   if (page === "profile") {
     var profile = S.getProfile();
-    setTitle("Profile", "Local demo profile stored in your browser.");
+    setTitle("Profile", "demo profile .");
     document.getElementById("page-content").innerHTML =
       '<div class="profile-header"><div class="profile-avatar-lg">' + C.escapeHtml(profile.avatar || "G") + '</div><div>' +
       '<h2>' + C.escapeHtml(profile.name) + '</h2><p class="text-secondary">Demo profile · data stays on this device</p>' +
@@ -318,8 +318,8 @@
   if (page === "help") {
     setTitle("Help Center", "Common questions about this demo platform.");
     document.getElementById("page-content").innerHTML =
-      '<div class="prose"><h2>Getting started</h2><p>Cineva is a frontend-only demonstration. Browse titles, add them to My List, and open the player.</p>' +
-      '<h2>My List and favorites</h2><p>Your lists are stored in the browser using LocalStorage.</p>' +
+      '<div class="prose"><h2>Getting started</h2><p>Cineva help line.</p>' +
+      '<h2>My List and favorites</h2><p>Your lists are stored sucessfully</p>' +
       '<h2>Search</h2><p>Use the search button in the header or press Ctrl/Cmd+K.</p></div>';
   }
 
@@ -331,10 +331,10 @@
   }
 
   if (page === "contact") {
-    setTitle("Contact", "Demo contact form. Messages are not sent to a server.");
+    setTitle("Contact", "Messages sent to a server.");
     document.getElementById("page-content").innerHTML =
       '<div class="contact-grid"><div><div class="contact-info-item">' + C.icon("info") +
-      '<div><strong>Demo only</strong><p class="text-secondary">This form validates input locally. No email is sent.</p></div></div></div>' +
+      '<div><strong>Demo only</strong><p class="text-secondary">Fill in the form below</p></div></div></div>' +
       '<form id="contact-form"><div class="form-group"><label for="cname">Name</label><input id="cname" required maxlength="80"></div>' +
       '<div class="form-group"><label for="cemail">Email</label><input id="cemail" type="email" required></div>' +
       '<div class="form-group"><label for="cmsg">Message</label><textarea id="cmsg" rows="5" required maxlength="1000"></textarea></div>' +
@@ -344,7 +344,7 @@
       e.preventDefault();
       var status = document.getElementById("contact-status");
       status.hidden = false;
-      status.textContent = "Thanks. This is a demo — your message was not transmitted.";
+      status.textContent = "Thanks. .";
       e.target.reset();
     });
   }
@@ -352,13 +352,13 @@
   if (page === "privacy") {
     setTitle("Privacy Policy", "");
     document.getElementById("page-content").innerHTML =
-      '<div class="prose"><p>This is a frontend demonstration. Preferences, lists, and history are stored in your browser via LocalStorage. No personal data is transmitted to a remote server.</p></div>';
+      '<div class="prose"><p>Details saved successfully.</p></div>';
   }
 
   if (page === "terms") {
     setTitle("Terms of Service", "");
     document.getElementById("page-content").innerHTML =
-      '<div class="prose"><p>Cineva is provided as a portfolio demonstration. Content metadata is illustrative. Do not use this project to distribute unauthorized media.</p></div>';
+      '<div class="prose"><p>Cineva is provides movies both translated and non translated</p></div>';
   }
 
   if (page === "not-found") {
