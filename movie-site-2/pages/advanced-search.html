@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Search – Cineva</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/layout.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/pages.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+</head>
+<body>
+  <div id="site-header"></div>
+  <main class="page">
+    <div class="container">
+      <header class="page-header">
+        <h1>Advanced Search</h1>
+        <p>Filter the full catalog by type, genre, rating, and more.</p>
+      </header>
+      <div class="filter-bar" id="filter-bar">
+        <div class="filter-group">
+          <label for="q">Title</label>
+          <input type="search" id="q" placeholder="Search titles...">
+        </div>
+        <div class="filter-group">
+          <label for="type">Type</label>
+          <select id="type">
+            <option value="all">All</option>
+            <option value="movie">Movies</option>
+            <option value="series">Series</option>
+            <option value="anime">Anime</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="genre">Genre</label>
+          <select id="genre"><option value="all">All</option></select>
+        </div>
+        <div class="filter-group">
+          <label for="sort">Sort</label>
+          <select id="sort">
+            <option value="popularity">Popularity</option>
+            <option value="rating">Rating</option>
+            <option value="newest">Newest</option>
+            <option value="title">A–Z</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="rating">Min rating</label>
+          <select id="rating">
+            <option value="0">Any</option>
+            <option value="7">7+</option>
+            <option value="8">8+</option>
+          </select>
+        </div>
+        <div class="filter-actions">
+          <button type="button" class="btn btn-primary btn-sm" id="apply">Apply</button>
+          <button type="button" class="btn btn-secondary btn-sm" id="clear">Clear</button>
+        </div>
+      </div>
+      <p class="results-count" id="rc"></p>
+      <div class="card-grid" id="grid"></div>
+    </div>
+  </main>
+  <div id="site-footer"></div>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/storage.js"></script>
+  <script src="../assets/js/components.js"></script>
+  <script src="../assets/js/app.js"></script>
+  <script>
+    window.CinevaApp.initApp();
+    var D = window.CinevaData;
+    var C = window.CinevaComponents;
+    var genreSel = document.getElementById("genre");
+    D.GENRES.forEach(function (g) {
+      var o = document.createElement("option");
+      o.value = g.id; o.textContent = g.name;
+      genreSel.appendChild(o);
+    });
+    function apply() {
+      var results = D.filterTitles({
+        query: document.getElementById("q").value,
+        type: document.getElementById("type").value,
+        genre: genreSel.value,
+        sort: document.getElementById("sort").value,
+        minRating: document.getElementById("rating").value
+      });
+      document.getElementById("rc").textContent = results.length + " results";
+      C.renderCardGrid(document.getElementById("grid"), results);
+    }
+    document.getElementById("apply").addEventListener("click", apply);
+    document.getElementById("clear").addEventListener("click", function () {
+      document.getElementById("q").value = "";
+      document.getElementById("type").value = "all";
+      genreSel.value = "all";
+      document.getElementById("sort").value = "popularity";
+      document.getElementById("rating").value = "0";
+      apply();
+    });
+    document.getElementById("q").addEventListener("keydown", function (e) { if (e.key === "Enter") apply(); });
+    apply();
+  </script>
+</body>
+</html>

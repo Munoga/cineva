@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Admin – Cineva</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/layout.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/pages.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+  <style>
+    body { background: #0a0a0a; }
+    .admin-shell { display: none; min-height: 100vh; }
+    .admin-shell.is-open { display: grid; grid-template-columns: 240px 1fr; }
+    @media (max-width: 900px) { .admin-shell.is-open { grid-template-columns: 1fr; } .admin-sidebar { display: none; } .admin-sidebar.mobile-open { display: block; } }
+
+    .admin-sidebar {
+      background: #111; border-right: 1px solid #262626; padding: 24px 16px;
+      position: sticky; top: 0; height: 100vh; overflow-y: auto;
+    }
+    .admin-brand { font-weight: 800; font-size: 1.15rem; margin-bottom: 28px; padding: 0 8px; }
+    .admin-brand span { color: #FF0000; }
+    .admin-nav-item {
+      display: flex; align-items: center; gap: 10px; width: 100%; text-align: left;
+      padding: 11px 12px; border-radius: 8px; border: 0; background: transparent;
+      color: #a3a3a3; font: inherit; font-size: 0.875rem; font-weight: 500; cursor: pointer; margin-bottom: 4px;
+    }
+    .admin-nav-item:hover { background: #1a1a1a; color: #fff; }
+    .admin-nav-item.active { background: rgba(255,0,0,.12); color: #fff; }
+    .admin-nav-item .badge {
+      margin-left: auto; background: #FF0000; color: #fff; font-size: 0.7rem;
+      min-width: 18px; height: 18px; border-radius: 9px; display: grid; place-items: center; padding: 0 5px;
+    }
+    .admin-side-foot { margin-top: 32px; padding: 0 8px; font-size: 0.75rem; color: #525252; }
+
+    .admin-main { padding: 28px 32px 48px; max-width: 1100px; }
+    @media (max-width: 600px) { .admin-main { padding: 20px 16px 40px; } }
+    .admin-topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
+    .admin-topbar h1 { margin: 0; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; }
+    .admin-topbar .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 28px; }
+    .stat-card {
+      background: #141414; border: 1px solid #262626; border-radius: 12px; padding: 18px 16px;
+    }
+    .stat-card .val { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; }
+    .stat-card .lbl { font-size: 0.78rem; color: #737373; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    .panel {
+      background: #141414; border: 1px solid #262626; border-radius: 12px; padding: 22px;
+      margin-bottom: 20px;
+    }
+    .panel h2 { margin: 0 0 6px; font-size: 1.05rem; font-weight: 650; }
+    .panel .panel-desc { margin: 0 0 18px; font-size: 0.85rem; color: #737373; }
+    .panel-section { display: none; }
+    .panel-section.active { display: block; }
+
+    .form-grid { display: grid; gap: 14px; }
+    .form-grid.two { grid-template-columns: 1fr 1fr; }
+    @media (max-width: 640px) { .form-grid.two { grid-template-columns: 1fr; } }
+    .field label { display: block; font-size: 0.78rem; font-weight: 500; color: #a3a3a3; margin-bottom: 6px; }
+    .field input, .field select, .field textarea {
+      width: 100%; padding: 11px 12px; border-radius: 8px; border: 1px solid #333;
+      background: #0a0a0a; color: #fff; font: inherit; box-sizing: border-box;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: #FF0000; }
+    .field textarea { min-height: 88px; resize: vertical; }
+
+    table.data { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+    table.data th { text-align: left; color: #737373; font-weight: 500; padding: 10px 12px; border-bottom: 1px solid #262626; white-space: nowrap; }
+    table.data td { padding: 12px; border-bottom: 1px solid #1f1f1f; vertical-align: middle; }
+    table.data tr:hover td { background: rgba(255,255,255,.02); }
+    .table-wrap { overflow-x: auto; }
+
+    .notif-item {
+      display: flex; gap: 12px; padding: 14px; border-radius: 10px; border: 1px solid #262626;
+      background: #0f0f0f; margin-bottom: 10px; align-items: flex-start;
+    }
+    .notif-item.unread { border-color: rgba(255,0,0,.35); background: rgba(255,0,0,.04); }
+    .notif-item .dot { width: 8px; height: 8px; border-radius: 50%; background: #FF0000; margin-top: 6px; flex-shrink: 0; }
+    .notif-item.read .dot { background: #404040; }
+    .notif-item h3 { margin: 0 0 4px; font-size: 0.9rem; font-weight: 600; }
+    .notif-item p { margin: 0; font-size: 0.85rem; color: #a3a3a3; line-height: 1.4; }
+    .notif-item .time { font-size: 0.72rem; color: #525252; margin-top: 6px; }
+
+    .gate {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px;
+    }
+    .gate-card {
+      width: 100%; max-width: 400px; background: #141414; border: 1px solid #262626;
+      border-radius: 14px; padding: 32px 28px; box-shadow: 0 24px 60px rgba(0,0,0,.45);
+    }
+    .gate-card h1 { margin: 0 0 6px; font-size: 1.35rem; }
+    .gate-card .sub { margin: 0 0 22px; color: #737373; font-size: 0.9rem; }
+    .gate-card input {
+      width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333;
+      background: #0a0a0a; color: #fff; font: inherit; box-sizing: border-box; margin-bottom: 14px;
+    }
+    .msg { font-size: 0.875rem; margin-top: 12px; }
+    .msg.ok { color: #4ade80; }
+    .msg.err { color: #f87171; }
+    .empty-row { text-align: center; color: #525252; padding: 24px !important; }
+    .status-pill {
+      display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.72rem; font-weight: 600;
+      background: #262626; color: #a3a3a3;
+    }
+    .status-pill.pending { background: rgba(245,158,11,.15); color: #fbbf24; }
+    .status-pill.done { background: rgba(34,197,94,.15); color: #4ade80; }
+  </style>
+</head>
+<body>
+  <!-- Unlock gate -->
+  <div class="gate" id="gate">
+    <div class="gate-card">
+      <div style="font-weight:800;margin-bottom:16px">Cine<span style="color:#FF0000">va</span> Admin</div>
+      <h1>Secure access</h1>
+      <p class="sub">This dashboard is not linked in the public site. Enter the admin password to continue.</p>
+      <label for="admin-pass" style="font-size:0.8rem;color:#a3a3a3;display:block;margin-bottom:6px">Password</label>
+      <input type="password" id="admin-pass" placeholder="Admin password" autocomplete="current-password">
+      <button type="button" class="btn btn-primary" id="unlock-btn" style="width:100%;justify-content:center;padding:12px">Unlock dashboard</button>
+      <p style="margin:14px 0 0;font-size:0.75rem;color:#525252">Demo password: <code style="color:#a3a3a3">cineva-admin</code></p>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div class="admin-shell" id="shell">
+    <aside class="admin-sidebar" id="sidebar">
+      <div class="admin-brand">Cine<span>va</span> Admin</div>
+      <button type="button" class="admin-nav-item active" data-section="overview">Overview</button>
+      <button type="button" class="admin-nav-item" data-section="add">Add movie</button>
+      <button type="button" class="admin-nav-item" data-section="stats">Analytics</button>
+      <button type="button" class="admin-nav-item" data-section="requests">
+        Requests
+        <span class="badge" id="req-badge" style="display:none">0</span>
+      </button>
+      <button type="button" class="admin-nav-item" data-section="notifications">
+        Notifications
+        <span class="badge" id="adm-notif-badge" style="display:none">0</span>
+      </button>
+      <button type="button" class="admin-nav-item" data-section="catalogue">Catalogue</button>
+      <div class="admin-side-foot">Hidden route · session unlock</div>
+    </aside>
+
+    <div class="admin-main">
+      <div class="admin-topbar">
+        <h1 id="section-title">Overview</h1>
+        <div class="actions">
+          <a href="../index.html" class="btn btn-ghost btn-sm">Public site</a>
+          <button type="button" class="btn btn-ghost btn-sm" id="lock-btn">Lock</button>
+        </div>
+      </div>
+
+      <!-- Overview -->
+      <section class="panel-section active" id="sec-overview">
+        <div class="stat-grid" id="top-stats"></div>
+        <div class="panel">
+          <h2>Recent admin notifications</h2>
+          <p class="panel-desc">Latest movie requests and system alerts.</p>
+          <div id="overview-notifs"></div>
+        </div>
+      </section>
+
+      <!-- Add movie -->
+      <section class="panel-section" id="sec-add">
+        <div class="panel">
+          <h2>Add movie to catalogue</h2>
+          <p class="panel-desc">New titles merge into the live front-end catalogue (same as data.js entries) via local storage.</p>
+          <form id="add-form" class="form-grid">
+            <div class="field">
+              <label>Movie title *</label>
+              <input name="title" required placeholder="e.g. Kampala Nights">
+            </div>
+            <div class="form-grid two">
+              <div class="field">
+                <label>Genre *</label>
+                <select name="genre" required>
+                  <option value="action">Action</option>
+                  <option value="comedy">Comedy</option>
+                  <option value="drama">Drama</option>
+                  <option value="horror">Horror</option>
+                  <option value="scifi">Sci-Fi</option>
+                  <option value="thriller">Thriller</option>
+                  <option value="romance">Romance</option>
+                  <option value="adventure">Adventure</option>
+                  <option value="fantasy">Fantasy</option>
+                  <option value="animation">Animation</option>
+                  <option value="crime">Crime</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Year *</label>
+                <input name="year" type="number" required min="1900" max="2030" value="2026">
+              </div>
+            </div>
+            <div class="form-grid two">
+              <div class="field">
+                <label>VJ name</label>
+                <input name="vj" placeholder="e.g. VJ Junior">
+              </div>
+              <div class="field">
+                <label>Runtime (minutes)</label>
+                <input name="runtime" type="number" min="1" placeholder="120">
+              </div>
+            </div>
+            <div class="field">
+              <label>Short description *</label>
+              <textarea name="synopsis" required placeholder="Brief synopsis for the details page"></textarea>
+            </div>
+            <div class="field">
+              <label>Movie URL (playback) *</label>
+              <input name="videoUrl" type="url" required placeholder="https://example.com/movie.mp4">
+            </div>
+            <div class="field">
+              <label>Poster URL *</label>
+              <input name="poster" type="url" required placeholder="https://example.com/poster.jpg">
+            </div>
+            <div class="field">
+              <label>Backdrop URL (optional)</label>
+              <input name="backdrop" type="url" placeholder="https://example.com/backdrop.jpg">
+            </div>
+            <div>
+              <button type="submit" class="btn btn-primary">Publish to catalogue</button>
+              <p class="msg" id="add-msg"></p>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- Stats -->
+      <section class="panel-section" id="sec-stats">
+        <div class="panel">
+          <h2>Movie performance</h2>
+          <p class="panel-desc">Views, downloads, favourites and watchlist counts per title.</p>
+          <div class="table-wrap">
+            <table class="data" id="movie-stats-table">
+              <thead><tr><th>Title</th><th>VJ</th><th>Views</th><th>Downloads</th><th>Likes</th><th>Favourites</th><th>Watchlist</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="panel">
+          <h2>VJ performance</h2>
+          <p class="panel-desc">Aggregated views and downloads by VJ name.</p>
+          <div class="table-wrap">
+            <table class="data" id="vj-stats-table">
+              <thead><tr><th>VJ</th><th>Views</th><th>Downloads</th><th>Likes</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Requests -->
+      <section class="panel-section" id="sec-requests">
+        <div class="panel">
+          <h2>Movie requests from users</h2>
+          <p class="panel-desc">Submitted from the Recommendations page. Mark as done when fulfilled.</p>
+          <div class="table-wrap">
+            <table class="data" id="requests-table">
+              <thead><tr><th>Title</th><th>Note</th><th>From</th><th>Status</th><th>When</th><th></th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Notifications -->
+      <section class="panel-section" id="sec-notifications">
+        <div class="panel">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px">
+            <div>
+              <h2 style="margin:0">Admin notifications</h2>
+              <p class="panel-desc" style="margin:6px 0 0">Alerts when users request movies.</p>
+            </div>
+            <button type="button" class="btn btn-ghost btn-sm" id="mark-all-read">Mark all read</button>
+          </div>
+          <div id="admin-notif-list"></div>
+        </div>
+      </section>
+
+      <!-- Catalogue -->
+      <section class="panel-section" id="sec-catalogue">
+        <div class="panel">
+          <h2>Admin-added movies</h2>
+          <p class="panel-desc">Titles you published from this panel. Export a data.js snippet for permanent inclusion.</p>
+          <div class="table-wrap">
+            <table class="data" id="admin-movies-table">
+              <thead><tr><th>Title</th><th>Year</th><th>Genre</th><th>VJ</th><th></th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm" id="export-btn" style="margin-top:14px">Export data.js snippet</button>
+          <pre id="export-out" style="display:none;margin-top:12px;padding:14px;background:#0a0a0a;border-radius:8px;font-size:0.75rem;overflow:auto;max-height:260px;white-space:pre-wrap;border:1px solid #262626"></pre>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/storage.js"></script>
+  <script src="../assets/js/components.js"></script>
+  <script>
+    (function () {
+      var S = window.CinevaStorage;
+      var D = window.CinevaData;
+      var C = window.CinevaComponents;
+      var GATE_KEY = "cineva_admin_unlocked";
+      var PASS = "cineva-admin";
+
+      function unlocked() { try { return sessionStorage.getItem(GATE_KEY) === "1"; } catch (e) { return false; } }
+      function setUnlocked(v) { try { sessionStorage.setItem(GATE_KEY, v ? "1" : "0"); } catch (e) {} }
+
+      function openDash() {
+        document.getElementById("gate").style.display = "none";
+        document.getElementById("shell").classList.add("is-open");
+        renderAll();
+      }
+      function closeDash() {
+        document.getElementById("gate").style.display = "flex";
+        document.getElementById("shell").classList.remove("is-open");
+      }
+
+      if (unlocked()) openDash();
+
+      document.getElementById("unlock-btn").onclick = function () {
+        if (document.getElementById("admin-pass").value === PASS) {
+          setUnlocked(true);
+          openDash();
+        } else alert("Incorrect password");
+      };
+      document.getElementById("admin-pass").addEventListener("keydown", function (e) {
+        if (e.key === "Enter") document.getElementById("unlock-btn").click();
+      });
+      document.getElementById("lock-btn").onclick = function () { setUnlocked(false); closeDash(); };
+
+      // Section nav
+      var titles = {
+        overview: "Overview",
+        add: "Add movie",
+        stats: "Analytics",
+        requests: "Movie requests",
+        notifications: "Notifications",
+        catalogue: "Catalogue"
+      };
+      document.querySelectorAll(".admin-nav-item").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var sec = btn.getAttribute("data-section");
+          document.querySelectorAll(".admin-nav-item").forEach(function (b) { b.classList.remove("active"); });
+          btn.classList.add("active");
+          document.querySelectorAll(".panel-section").forEach(function (p) { p.classList.remove("active"); });
+          document.getElementById("sec-" + sec).classList.add("active");
+          document.getElementById("section-title").textContent = titles[sec] || sec;
+        });
+      });
+
+      function slugify(s) {
+        return String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 48) || "movie";
+      }
+      function fmtTime(ts) {
+        if (!ts) return "—";
+        try { return new Date(ts).toLocaleString(); } catch (e) { return "—"; }
+      }
+
+      document.getElementById("add-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var fd = new FormData(e.target);
+        var title = String(fd.get("title") || "").trim();
+        var year = Number(fd.get("year"));
+        var genre = String(fd.get("genre") || "drama");
+        var vj = String(fd.get("vj") || "").trim() || null;
+        var synopsis = String(fd.get("synopsis") || "").trim();
+        var videoUrl = String(fd.get("videoUrl") || "").trim();
+        var poster = String(fd.get("poster") || "").trim();
+        var backdrop = String(fd.get("backdrop") || "").trim() || poster;
+        var runtime = Number(fd.get("runtime")) || 120;
+        var id = "admin_" + Date.now().toString(36);
+        var movie = {
+          id: id, slug: slugify(title) + "-" + id.slice(-4), title: title, type: "movie",
+          year: year, runtime: runtime, rating: 7.0, ageRating: "PG-13", genres: [genre],
+          synopsis: synopsis, director: "Unknown", cast: ["TBA"], poster: poster, backdrop: backdrop,
+          featured: false, trending: true, popularity: 70, releaseDate: year + "-01-01",
+          videoUrl: videoUrl, vj: vj
+        };
+        S.addAdminMovie(movie);
+        if (D.TITLES && !D.TITLES.some(function (t) { return t.id === id; })) D.TITLES.push(movie);
+        var msg = document.getElementById("add-msg");
+        msg.className = "msg ok";
+        msg.textContent = "Published “" + title + "”. It appears on the public site (refresh other tabs).";
+        e.target.reset();
+        document.querySelector('[name="year"]').value = "2026";
+        renderAll();
+      });
+
+      document.getElementById("mark-all-read").onclick = function () {
+        if (S.markAllAdminNotificationsRead) S.markAllAdminNotificationsRead();
+        renderAll();
+      };
+
+      document.getElementById("export-btn").onclick = function () {
+        var list = S.getAdminMovies();
+        var out = document.getElementById("export-out");
+        out.style.display = "block";
+        if (!list.length) { out.textContent = "// No admin movies to export."; return; }
+        out.textContent = "// Paste into assets/js/data.js inside TITLES:\n" +
+          list.map(function (m) { return "  " + JSON.stringify(m, null, 2).replace(/\n/g, "\n  "); }).join(",\n");
+      };
+
+      function renderAll() {
+        if (S.syncListCounts) S.syncListCounts();
+        var stats = S.getStats();
+        var adminMovies = S.getAdminMovies();
+        var all = D.TITLES || [];
+        var requests = S.getMovieRequests ? S.getMovieRequests() : [];
+        var adminNotifs = S.getAdminNotifications ? S.getAdminNotifications() : [];
+        var unreadReq = requests.filter(function (r) { return r.status === "pending"; }).length;
+        var unreadN = S.countUnreadAdminNotifications ? S.countUnreadAdminNotifications() : 0;
+
+        var badge = document.getElementById("req-badge");
+        badge.style.display = unreadReq ? "grid" : "none";
+        badge.textContent = String(unreadReq);
+        var nb = document.getElementById("adm-notif-badge");
+        nb.style.display = unreadN ? "grid" : "none";
+        nb.textContent = String(unreadN);
+
+        var totalViews = 0, totalDl = 0;
+        Object.keys(stats.movies || {}).forEach(function (id) {
+          totalViews += stats.movies[id].views || 0;
+          totalDl += stats.movies[id].downloads || 0;
+        });
+
+        document.getElementById("top-stats").innerHTML =
+          '<div class="stat-card"><div class="val">' + all.length + '</div><div class="lbl">Catalogue</div></div>' +
+          '<div class="stat-card"><div class="val">' + adminMovies.length + '</div><div class="lbl">Admin added</div></div>' +
+          '<div class="stat-card"><div class="val">' + totalViews + '</div><div class="lbl">Views</div></div>' +
+          '<div class="stat-card"><div class="val">' + totalDl + '</div><div class="lbl">Downloads</div></div>' +
+          '<div class="stat-card"><div class="val">' + (S.getFavorites().length) + '</div><div class="lbl">Favourites</div></div>' +
+          '<div class="stat-card"><div class="val">' + unreadReq + '</div><div class="lbl">Pending requests</div></div>';
+
+        // Overview notifs
+        var ov = document.getElementById("overview-notifs");
+        if (!adminNotifs.length) {
+          ov.innerHTML = '<p style="color:#525252;font-size:0.9rem">No notifications yet. User movie requests will appear here.</p>';
+        } else {
+          ov.innerHTML = adminNotifs.slice(0, 5).map(function (n) {
+            return '<div class="notif-item ' + (n.read ? "read" : "unread") + '"><span class="dot"></span><div style="flex:1">' +
+              '<h3>' + C.escapeHtml(n.title || "Notification") + '</h3>' +
+              '<p>' + C.escapeHtml(n.body || "") + '</p>' +
+              '<div class="time">' + fmtTime(n.createdAt) + '</div></div></div>';
+          }).join("");
+        }
+
+        // Movie stats
+        var rows = all.map(function (m) {
+          var s = (stats.movies && stats.movies[m.id]) || { views: 0, downloads: 0, favorites: 0, watchlist: 0 };
+          return { m: m, s: s };
+        }).sort(function (a, b) { return (b.s.views || 0) - (a.s.views || 0); });
+        document.querySelector("#movie-stats-table tbody").innerHTML = rows.slice(0, 60).map(function (r) {
+          return "<tr><td>" + C.escapeHtml(r.m.title) + "</td><td>" + C.escapeHtml(r.m.vj || "—") + "</td><td>" +
+            (r.s.views || 0) + "</td><td>" + (r.s.downloads || 0) + "</td><td>" + (r.s.likes || 0) + "</td><td>" + (r.s.favorites || 0) + "</td><td>" + (r.s.watchlist || 0) + "</td></tr>";
+        }).join("") || "<tr><td colspan='7' class='empty-row'>No stats yet</td></tr>";
+
+        var vjs = Object.keys(stats.vjs || {});
+        document.querySelector("#vj-stats-table tbody").innerHTML = vjs.map(function (name) {
+          var v = stats.vjs[name];
+          return "<tr><td>" + C.escapeHtml(name) + "</td><td>" + (v.views || 0) + "</td><td>" + (v.downloads || 0) + "</td><td>" + (v.likes || 0) + "</td></tr>";
+        }).join("") || "<tr><td colspan='4' class='empty-row'>No VJ stats yet</td></tr>";
+
+        // Requests
+        document.querySelector("#requests-table tbody").innerHTML = requests.map(function (r) {
+          var st = r.status === "done" ? "done" : "pending";
+          return "<tr><td>" + C.escapeHtml(r.title || "") + "</td><td>" + C.escapeHtml(r.note || "—") + "</td><td>" +
+            C.escapeHtml(r.fromEmail || r.fromName || r.userEmail || r.userName || "Guest") + "</td><td><span class='status-pill " + st + "'>" + st +
+            "</span></td><td>" + fmtTime(r.createdAt) + "</td><td>" +
+            (st === "pending" ? '<button type="button" class="btn btn-ghost btn-sm" data-done="' + r.id + '">Mark done</button>' : "") +
+            "</td></tr>";
+        }).join("") || "<tr><td colspan='6' class='empty-row'>No requests yet</td></tr>";
+
+        document.querySelectorAll("[data-done]").forEach(function (btn) {
+          btn.onclick = function () {
+            if (S.setMovieRequestStatus) S.setMovieRequestStatus(btn.getAttribute("data-done"), "done");
+            renderAll();
+          };
+        });
+
+        // Admin notifications full list
+        var nl = document.getElementById("admin-notif-list");
+        if (!adminNotifs.length) {
+          nl.innerHTML = '<p style="color:#525252;font-size:0.9rem">No admin notifications.</p>';
+        } else {
+          nl.innerHTML = adminNotifs.map(function (n) {
+            return '<div class="notif-item ' + (n.read ? "read" : "unread") + '" data-nid="' + n.id + '" style="cursor:pointer">' +
+              '<span class="dot"></span><div style="flex:1"><h3>' + C.escapeHtml(n.title || "Notification") + '</h3>' +
+              '<p>' + C.escapeHtml(n.body || "") + '</p><div class="time">' + fmtTime(n.createdAt) + '</div></div></div>';
+          }).join("");
+          nl.querySelectorAll("[data-nid]").forEach(function (el) {
+            el.onclick = function () {
+              if (S.markAdminNotificationRead) S.markAdminNotificationRead(el.getAttribute("data-nid"));
+              renderAll();
+            };
+          });
+        }
+
+        // Admin movies
+        document.querySelector("#admin-movies-table tbody").innerHTML = adminMovies.map(function (m) {
+          return "<tr><td>" + C.escapeHtml(m.title) + "</td><td>" + m.year + "</td><td>" +
+            C.escapeHtml((m.genres && m.genres[0]) || "") + "</td><td>" + C.escapeHtml(m.vj || "—") +
+            '</td><td><button type="button" class="btn btn-ghost btn-sm" data-del="' + m.id + '">Remove</button></td></tr>';
+        }).join("") || "<tr><td colspan='5' class='empty-row'>No admin-added movies</td></tr>";
+
+        document.querySelectorAll("[data-del]").forEach(function (btn) {
+          btn.onclick = function () {
+            var id = btn.getAttribute("data-del");
+            if (!confirm("Remove this movie from admin catalogue?")) return;
+            S.removeAdminMovie(id);
+            if (D.TITLES) {
+              var i = D.TITLES.findIndex(function (t) { return t.id === id; });
+              if (i >= 0) D.TITLES.splice(i, 1);
+            }
+            renderAll();
+          };
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

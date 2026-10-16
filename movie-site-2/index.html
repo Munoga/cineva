@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cineva – Premium movie and series streaming discovery. Explore, save, and watch.">
+  <title>Cineva – Discover Movies & Series</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/pages.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main id="main">
+    <!-- Hero Carousel -->
+    <section class="hero" aria-label="Featured titles" id="hero">
+      <button type="button" class="hero-side-nav prev" id="hero-side-prev" aria-label="Previous featured"></button>
+      <button type="button" class="hero-side-nav next" id="hero-side-next" aria-label="Next featured"></button>
+      <div class="hero-slides" id="hero-slides"></div>
+      <div class="hero-controls">
+        <div class="hero-indicators" id="hero-indicators" role="tablist"></div>
+        <button type="button" class="hero-nav-btn" id="hero-prev" aria-label="Previous slide"></button>
+        <button type="button" class="hero-nav-btn" id="hero-next" aria-label="Next slide"></button>
+      </div>
+    </section>
+
+    <div class="container">
+      <!-- Trending -->
+      <section class="section home-section" aria-labelledby="trending-title">
+        <div class="section-header">
+          <h2 class="section-title" id="trending-title">Trending Now</h2>
+          <a href="pages/trending.html" class="section-link">View all</a>
+        </div>
+        <div class="carousel">
+          <button type="button" class="carousel-btn prev" aria-label="Scroll left"></button>
+          <div class="carousel-track" id="trending-track"></div>
+          <button type="button" class="carousel-btn next" aria-label="Scroll right"></button>
+        </div>
+      </section>
+
+      <!-- Popular Movies -->
+      <section class="section home-section" aria-labelledby="popular-title">
+        <div class="section-header">
+          <h2 class="section-title" id="popular-title">Popular Movies</h2>
+          <a href="pages/movies.html" class="section-link">View all</a>
+        </div>
+        <div class="carousel">
+          <button type="button" class="carousel-btn prev" aria-label="Scroll left"></button>
+          <div class="carousel-track" id="popular-movies-track"></div>
+          <button type="button" class="carousel-btn next" aria-label="Scroll right"></button>
+        </div>
+      </section>
+
+      <!-- Top Rated -->
+      <section class="section home-section" aria-labelledby="toprated-title">
+        <div class="section-header">
+          <h2 class="section-title" id="toprated-title">Top Rated</h2>
+          <a href="pages/popular.html" class="section-link">View all</a>
+        </div>
+        <div class="carousel">
+          <button type="button" class="carousel-btn prev" aria-label="Scroll left"></button>
+          <div class="carousel-track" id="toprated-track"></div>
+          <button type="button" class="carousel-btn next" aria-label="Scroll right"></button>
+        </div>
+      </section>
+
+      <!-- Continue Watching -->
+      <section class="section home-section" id="continue-section" aria-labelledby="continue-title" hidden>
+        <div class="section-header">
+          <h2 class="section-title" id="continue-title">Continue Watching</h2>
+          <a href="pages/continue-watching.html" class="section-link">View all</a>
+        </div>
+        <div class="carousel">
+          <div class="carousel-track" id="continue-track"></div>
+        </div>
+      </section>
+
+      <!-- Latest Releases -->
+      <section class="section home-section" aria-labelledby="latest-title">
+        <div class="section-header">
+          <h2 class="section-title" id="latest-title">Latest Releases</h2>
+          <a href="pages/latest.html" class="section-link">View all</a>
+        </div>
+        <div class="carousel">
+          <button type="button" class="carousel-btn prev" aria-label="Scroll left"></button>
+          <div class="carousel-track" id="latest-track"></div>
+          <button type="button" class="carousel-btn next" aria-label="Scroll right"></button>
+        </div>
+      </section>
+
+      <!-- Popular Series -->
+      <section class="section home-section" aria-labelledby="series-title">
+        <div class="section-header">
+          <h2 class="section-title" id="series-title">Popular TV Series</h2>
+          <a href="pages/series.html" class="section-link">View all</a>
+        </div>
+        <div class="carousel">
+          <button type="button" class="carousel-btn prev" aria-label="Scroll left"></button>
+          <div class="carousel-track" id="series-track"></div>
+          <button type="button" class="carousel-btn next" aria-label="Scroll right"></button>
+        </div>
+      </section>
+
+      <!-- Anime -->
+      <section class="section home-section" aria-labelledby="anime-title">
+        <div class="section-header">
+          <h2 class="section-title" id="anime-title">Anime</h2>
+          <a href="pages/anime.html" class="section-link">View all</a>
+        </div>
+        <div class="carousel">
+          <button type="button" class="carousel-btn prev" aria-label="Scroll left"></button>
+          <div class="carousel-track" id="anime-track"></div>
+          <button type="button" class="carousel-btn next" aria-label="Scroll right"></button>
+        </div>
+      </section>
+
+      <!-- Browse by Genre -->
+      <section class="section home-section" aria-labelledby="genres-title">
+        <div class="section-header">
+          <h2 class="section-title" id="genres-title">Browse by Genre</h2>
+          <a href="pages/genres.html" class="section-link">All genres</a>
+        </div>
+        <div class="genre-grid" id="genre-grid"></div>
+      </section>
+
+      <!-- Recommended -->
+      <section class="section home-section" aria-labelledby="rec-title">
+        <div class="section-header">
+          <h2 class="section-title" id="rec-title">Recommended for You</h2>
+          <a href="pages/recommendations.html" class="section-link">View all</a>
+        </div>
+        <p class="text-muted" style="margin-bottom: var(--space-4); font-size: var(--text-sm);">Demo recommendations based on popular titles in your preferred genres.</p>
+        <div class="carousel">
+          <button type="button" class="carousel-btn prev" aria-label="Scroll left"></button>
+          <div class="carousel-track" id="rec-track"></div>
+          <button type="button" class="carousel-btn next" aria-label="Scroll right"></button>
+        </div>
+      </section>
+
+      <!-- Collections -->
+      <section class="section home-section" aria-labelledby="collections-title">
+        <div class="section-header">
+          <h2 class="section-title" id="collections-title">Popular Collections</h2>
+          <a href="pages/collections.html" class="section-link">View all</a>
+        </div>
+        <div class="collection-grid" id="collections-grid"></div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Request a Movie -->
+  <section class="request-section" id="request-movie" aria-labelledby="request-title">
+    <div class="container request-inner">
+      <div class="request-copy">
+        <h2 id="request-title">Request a Movie</h2>
+        <p>Cannot find a title? Tell us what you want to watch. This is a demo form — requests stay in your browser only.</p>
+      </div>
+      <form class="request-form" id="request-form" novalidate>
+        <div class="request-fields">
+          <input type="text" id="req-title" name="title" placeholder="Movie or series name" required maxlength="120" aria-label="Title">
+          <input type="text" id="req-year" name="year" placeholder="Year (optional)" maxlength="4" aria-label="Year">
+          <button type="submit" class="btn btn-primary">Send request</button>
+        </div>
+        <p class="request-status text-muted" id="req-status" hidden></p>
+      </form>
+    </div>
+  </section>
+
+  <div id="site-footer"></div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/components.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    
+    function initAutoScrollCarousels() {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      var tracks = document.querySelectorAll(".carousel-track");
+      tracks.forEach(function (track, i) {
+        if (track.dataset.autoScroll === "1") return;
+        track.dataset.autoScroll = "1";
+        var dir = (i % 2 === 0) ? 1 : -1; // alternate left/right
+        var paused = false;
+        var speed = 0.45; // px per frame-ish via interval
+        track.addEventListener("mouseenter", function () { paused = true; });
+        track.addEventListener("mouseleave", function () { paused = false; });
+        track.addEventListener("touchstart", function () { paused = true; }, { passive: true });
+        track.addEventListener("touchend", function () { paused = false; }, { passive: true });
+        setInterval(function () {
+          if (paused) return;
+          var max = track.scrollWidth - track.clientWidth;
+          if (max <= 0) return;
+          track.scrollLeft += dir * speed * 8;
+          if (track.scrollLeft >= max - 2) dir = -1;
+          if (track.scrollLeft <= 2) dir = 1;
+        }, 40);
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      window.CinevaApp.initApp();
+      var D = window.CinevaData;
+      var S = window.CinevaStorage;
+      var C = window.CinevaComponents;
+
+      var featured = D.getFeatured().slice(0, 5);
+      var slidesEl = document.getElementById("hero-slides");
+      var indicatorsEl = document.getElementById("hero-indicators");
+      var current = 0;
+      var autoTimer = null;
+      var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      function buildSlide(t, index) {
+        var inList = S.isInMyList(t.id);
+        var slide = document.createElement("div");
+        slide.className = "hero-slide" + (index === 0 ? " is-active" : "");
+        slide.setAttribute("role", "tabpanel");
+        slide.innerHTML =
+          '<div class="hero-backdrop"><img src="' + t.backdrop + '" alt="" loading="' + (index === 0 ? "eager" : "lazy") + '" onerror="this.style.display=\'none\'"><div class="hero-overlay"></div></div>' +
+          '<div class="hero-content container">' +
+          '<div class="hero-meta"><span class="badge badge-red">' + (t.type === "series" || t.type === "anime" ? "Series" : "Movie") + '</span>' +
+          '<span>' + t.year + '</span><span>' + (t.ageRating || "") + '</span>' +
+          '<span>' + (t.runtime ? t.runtime + " min" : (t.seasons ? t.seasons + " seasons" : "")) + '</span>' +
+          '<span class="rating">' + C.icon("star") + " " + t.rating.toFixed(1) + '</span></div>' +
+          '<h1 class="hero-title">' + C.escapeHtml(t.title) + '</h1>' +
+          '<p class="hero-synopsis">' + C.escapeHtml(t.synopsis) + '</p>' +
+          '<div class="hero-actions">' +
+          '<a href="' + C.watchUrl(t) + '" class="btn btn-primary btn-lg">' + C.icon("play") + ' Watch Now</a>' +
+          '<a href="' + C.detailsUrl(t) + '" class="btn btn-secondary btn-lg">' + C.icon("info") + ' More Info</a>' +
+          '<button type="button" class="btn btn-ghost btn-lg hero-list-btn" data-id="' + t.id + '">' +
+          (inList ? C.icon("check") + " In My List" : C.icon("plus") + " My List") + '</button></div></div>';
+        slide.querySelector(".hero-list-btn").addEventListener("click", function (e) {
+          var btn = e.currentTarget;
+          var nowIn = S.toggleMyList(t.id);
+          btn.innerHTML = nowIn ? C.icon("check") + " In My List" : C.icon("plus") + " My List";
+        });
+        return slide;
+      }
+
+      featured.forEach(function (t, i) {
+        slidesEl.appendChild(buildSlide(t, i));
+        var ind = document.createElement("button");
+        ind.type = "button";
+        ind.className = "hero-indicator" + (i === 0 ? " is-active" : "");
+        ind.setAttribute("role", "tab");
+        ind.setAttribute("aria-label", "Slide " + (i + 1) + ": " + t.title);
+        ind.addEventListener("click", function () { goTo(i); });
+        indicatorsEl.appendChild(ind);
+      });
+
+      document.getElementById("hero-prev").innerHTML = C.icon("chevronLeft");
+      document.getElementById("hero-next").innerHTML = C.icon("chevronRight");
+      var sidePrev = document.getElementById("hero-side-prev");
+      var sideNext = document.getElementById("hero-side-next");
+      if (sidePrev) sidePrev.innerHTML = C.icon("chevronLeft");
+      if (sideNext) sideNext.innerHTML = C.icon("chevronRight");
+      document.querySelectorAll(".carousel-btn.prev").forEach(function (b) { b.innerHTML = C.icon("chevronLeft"); });
+      document.querySelectorAll(".carousel-btn.next").forEach(function (b) { b.innerHTML = C.icon("chevronRight"); });
+
+      function goTo(index) {
+        var slides = slidesEl.querySelectorAll(".hero-slide");
+        var inds = indicatorsEl.querySelectorAll(".hero-indicator");
+        if (!slides.length) return;
+        slides[current].classList.remove("is-active");
+        if (inds[current]) inds[current].classList.remove("is-active");
+        current = (index + slides.length) % slides.length;
+        slides[current].classList.add("is-active");
+        if (inds[current]) inds[current].classList.add("is-active");
+        resetAuto();
+      }
+      function next() { goTo(current + 1); }
+      function prev() { goTo(current - 1); }
+      document.getElementById("hero-next").addEventListener("click", next);
+      document.getElementById("hero-prev").addEventListener("click", prev);
+      if (sidePrev) sidePrev.addEventListener("click", prev);
+      if (sideNext) sideNext.addEventListener("click", next);
+      function resetAuto() {
+        clearInterval(autoTimer);
+        if (!reduceMotion) autoTimer = setInterval(next, 2000);
+      }
+      resetAuto();
+      document.getElementById("hero").addEventListener("mouseenter", function () { clearInterval(autoTimer); });
+      document.getElementById("hero").addEventListener("mouseleave", resetAuto);
+      // Keyboard support for hero
+      document.addEventListener("keydown", function (e) {
+        if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+        if (e.key === "ArrowLeft") prev();
+        if (e.key === "ArrowRight") next();
+      });
+
+      function fillTrack(id, titles) {
+        var track = document.getElementById(id);
+        if (!track) return;
+        titles.forEach(function (t) { track.appendChild(C.createMovieCard(t)); });
+      }
+      fillTrack("trending-track", D.getTrending().slice(0, 12));
+      fillTrack("popular-movies-track", D.getTitlesByType("movie").sort(function (a, b) { return b.popularity - a.popularity; }).slice(0, 12));
+      fillTrack("toprated-track", D.getTopRated(12));
+      fillTrack("latest-track", D.getLatest(12));
+      fillTrack("series-track", D.getTitlesByType("series").sort(function (a, b) { return b.popularity - a.popularity; }).slice(0, 12));
+      fillTrack("anime-track", D.getTitlesByType("anime").sort(function (a, b) { return b.popularity - a.popularity; }).slice(0, 12));
+      fillTrack("rec-track", D.getPopular(12));
+
+      var continueData = S.getContinueWatching();
+      if (continueData.length) {
+        document.getElementById("continue-section").hidden = false;
+        var track = document.getElementById("continue-track");
+        continueData.forEach(function (item) {
+          var t = D.getTitleById(item.id);
+          if (t) track.appendChild(C.createMovieCard(t, { showProgress: true }));
+        });
+      }
+
+      var genreGrid = document.getElementById("genre-grid");
+      D.GENRES.forEach(function (g) {
+        var a = document.createElement("a");
+        a.href = "pages/genre-" + g.slug + ".html";
+        a.className = "genre-card";
+        a.textContent = g.name;
+        genreGrid.appendChild(a);
+      });
+
+      var colGrid = document.getElementById("collections-grid");
+      D.COLLECTIONS.slice(0, 6).forEach(function (c) {
+        var a = document.createElement("a");
+        a.href = "pages/collection-details.html?id=" + c.slug;
+        a.className = "collection-card";
+        a.innerHTML = '<img src="' + c.backdrop + '" alt="" loading="lazy" onerror="this.style.display=\'none\'"><div class="collection-card-overlay"><h3>' + C.escapeHtml(c.title) + '</h3><p>' + C.escapeHtml(c.description) + '</p></div>';
+        colGrid.appendChild(a);
+      });
+
+      C.initCarousels();
+      initAutoScrollCarousels();
+
+      var reqForm = document.getElementById("request-form");
+      if (reqForm) {
+        reqForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+          var title = document.getElementById("req-title").value.trim();
+          var year = document.getElementById("req-year").value.trim();
+          var status = document.getElementById("req-status");
+          if (!title) {
+            status.hidden = false;
+            status.textContent = "Please enter a title.";
+            status.style.color = "var(--color-red)";
+            return;
+          }
+          try {
+            var list = JSON.parse(localStorage.getItem("cineva_requests") || "[]");
+            list.unshift({ title: title, year: year, at: Date.now() });
+            localStorage.setItem("cineva_requests", JSON.stringify(list.slice(0, 20)));
+          } catch (err) {}
+          status.hidden = false;
+          status.style.color = "var(--color-text-secondary)";
+          status.textContent = "Thanks — “" + title + "” was saved as a demo request.";
+          reqForm.reset();
+        });
+      }
+    });
+  </script>
+</body>
+</html>

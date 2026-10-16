@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign in – Cineva</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/layout.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/pages.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+  <style>
+    .auth-page { min-height: calc(100vh - 120px); display: flex; align-items: center; justify-content: center; padding: 40px 16px; }
+    .auth-card {
+      width: 100%; max-width: 420px; background: var(--color-bg-elevated, #171717);
+      border: 1px solid var(--color-border, #333); border-radius: 12px; padding: 32px 28px;
+      box-shadow: 0 20px 50px rgba(0,0,0,.35);
+    }
+    .auth-card h1 { margin: 0 0 6px; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; }
+    .auth-card .sub { margin: 0 0 24px; color: var(--color-text-secondary, #a3a3a3); font-size: 0.9rem; line-height: 1.45; }
+    .auth-card label { display: block; font-size: 0.8rem; font-weight: 500; margin-bottom: 6px; color: var(--color-text-secondary, #a3a3a3); }
+    .auth-card input {
+      width: 100%; padding: 11px 14px; margin-bottom: 16px; border-radius: 8px; box-sizing: border-box;
+      border: 1px solid var(--color-border, #404040); background: var(--color-bg, #0a0a0a); color: inherit; font: inherit;
+    }
+    .auth-card input:focus { outline: none; border-color: var(--color-accent, #FF0000); }
+    .auth-card .btn { width: 100%; justify-content: center; padding: 12px; margin-top: 4px; }
+    .auth-error { display: none; background: rgba(239,68,68,.12); border: 1px solid rgba(239,68,68,.35); color: #fca5a5;
+      padding: 10px 12px; border-radius: 8px; font-size: 0.85rem; margin-bottom: 16px; }
+    .auth-error.show { display: block; }
+    .auth-foot { margin-top: 20px; text-align: center; font-size: 0.875rem; color: var(--color-text-secondary, #a3a3a3); }
+    .auth-foot a { color: var(--color-accent, #FF0000); font-weight: 600; }
+    .auth-logo { font-weight: 800; font-size: 1.25rem; margin-bottom: 20px; display: block; text-align: center; }
+    .auth-logo span { color: var(--color-accent, #FF0000); }
+  </style>
+</head>
+<body>
+  <div id="site-header"></div>
+  <main class="auth-page">
+    <div class="auth-card">
+      <a href="../index.html" class="auth-logo">Cine<span>va</span></a>
+      <h1>Sign in</h1>
+      <p class="sub" id="auth-msg">Welcome back. Sign in to access your watchlist and favourites.</p>
+      <div class="auth-error" id="auth-error"></div>
+      <form id="signin-form" novalidate>
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@example.com">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required placeholder="••••••••" minlength="6">
+        <button type="submit" class="btn btn-primary">Sign in</button>
+      </form>
+      <p class="auth-foot">Don't have an account? <a href="signup.html">Sign up</a></p>
+    </div>
+  </main>
+  <div id="site-footer"></div>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/storage.js"></script>
+  <script src="../assets/js/components.js"></script>
+  <script src="../assets/js/app.js"></script>
+  <script>
+    window.CinevaApp.initApp();
+    var S = window.CinevaStorage;
+    if (S.isSignedIn()) { location.href = "profile.html"; }
+    var params = new URLSearchParams(location.search);
+    var msg = params.get("msg");
+    if (msg) document.getElementById("auth-msg").textContent = msg;
+    var next = params.get("next") || "profile.html";
+
+    document.getElementById("signin-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      var email = document.getElementById("email").value;
+      var password = document.getElementById("password").value;
+      var res = S.signIn(email, password);
+      var err = document.getElementById("auth-error");
+      if (!res.ok) {
+        err.textContent = res.error || "Could not sign in.";
+        err.classList.add("show");
+        return;
+      }
+      err.classList.remove("show");
+      location.href = next;
+    });
+  </script>
+</body>
+</html>
