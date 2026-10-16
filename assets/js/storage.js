@@ -1,6 +1,4 @@
-/**
- * CINEVA – LocalStorage / SessionStorage helpers
- */
+
 
 const PREFIX = "cineva_";
 
