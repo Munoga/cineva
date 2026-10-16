@@ -1,7 +1,3 @@
-/**
- * CINEVA – Application bootstrap (no ES modules, works with file://)
- * Depends on: data.js, storage.js, components.js
- */
 
 function renderHeader() {
   var C = window.CinevaComponents;
@@ -93,7 +89,7 @@ function renderFooter() {
     '<a href="' + base + 'pages/terms.html">Terms of Service</a></div></div>' +
     '</div>' +
     '<div class="footer-bottom"><span>&copy; ' + year + ' Cineva. All rights reserved. Demo frontend.</span>' +
-    '<span>Pure HTML, CSS &amp; JavaScript</span></div>' +
+    '<spanTHANK YOU FOR VISITING CINEVA</span></div>' +
     '</div></footer>'
   );
 }
